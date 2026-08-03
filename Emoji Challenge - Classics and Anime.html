@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emoji Movie Challenge — Classics &amp; Anime</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;}
+  img,svg{max-width:100%;}
+
+  :root{
+    --ink:#0E0B16;
+    --panel:#1B1626;
+    --panel-2:#241D33;
+    --gold:#F6C453;
+    --gold-deep:#D9A431;
+    --red:#E8425A;
+    --cyan:#5FB7D4;
+    --green:#6FCF97;
+    --cream:#F3EDE3;
+    --muted:#8A7F99;
+    --line:#332A47;
+    --display:Haettenschweiler,"Arial Narrow Bold",Impact,"Segoe UI",sans-serif;
+    --body:"Segoe UI",system-ui,-apple-system,sans-serif;
+    color-scheme:dark;
+  }
+
+  html,body{height:100%;}
+  body{
+    margin:0;
+    -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #241D33 0%, var(--ink) 60%),
+      var(--ink);
+    color:var(--cream);
+    font-family:var(--body);
+    overflow-x:hidden;
+  }
+  button{font-family:inherit;cursor:pointer;}
+  button:focus-visible, input:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px;}
+
+  .stage{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:24px clamp(16px,4vw,48px);
+    text-align:center;
+  }
+
+  .eyebrow{
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.35em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  .marquee-title{
+    font-family:var(--display);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    line-height:.95;
+    color:var(--gold);
+    text-wrap:balance;
+    margin:0;
+    text-shadow:0 0 40px rgba(246,196,83,.25);
+  }
+
+  /* ---------- lights strip ---------- */
+  .lights{display:flex;gap:14px;justify-content:center;margin:20px 0;}
+  .lights i{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--gold);
+    opacity:.25;
+    animation:blink 1.6s infinite;
+  }
+  .lights i:nth-child(2n){animation-delay:.4s;}
+  .lights i:nth-child(3n){animation-delay:.8s;}
+  .lights i:nth-child(5n){animation-delay:1.2s;}
+  @keyframes blink{0%,100%{opacity:.2}50%{opacity:.95}}
+
+  /* ---------- start screen ---------- */
+  #start .marquee-title{font-size:clamp(52px,10vw,140px);}
+  .tagline{
+    max-width:52ch;
+    margin:18px auto 0;
+    font-size:clamp(15px,1.6vw,19px);
+    color:var(--muted);
+    line-height:1.6;
+  }
+  .setup{
+    margin-top:36px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:28px 32px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    width:min(560px,100%);
+  }
+  .setup-row{display:flex;flex-direction:column;gap:10px;align-items:center;}
+  .setup-label{font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);}
+  .setup-hint{font-size:12px;font-weight:400;color:var(--muted);line-height:1.5;max-width:44ch;}
+  .seg{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+  .seg button{
+    background:var(--panel-2);
+    color:var(--cream);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:10px 20px;
+    font-size:15px;
+    font-weight:600;
+    font-variant-numeric:tabular-nums;
+    transition:background .15s,border-color .15s;
+  }
+  .seg button:hover{border-color:var(--gold-deep);}
+  .seg button.on{background:var(--gold);color:#231a05;border-color:var(--gold);}
+
+  .team-inputs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  .team-inputs label{display:flex;flex-direction:column;gap:6px;align-items:center;}
+  .team-inputs .dot{width:12px;height:12px;border-radius:50%;}
+  .team-inputs input{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    color:var(--cream);
+    font-family:inherit;
+    font-size:15px;
+    font-weight:600;
+    text-align:center;
+    padding:10px 12px;
+    width:130px;
+  }
+  .team-inputs input:hover{border-color:var(--gold-deep);}
+  .dot-t1{background:var(--gold);}
+  .dot-t2{background:var(--red);}
+  .dot-t3{background:var(--cyan);}
+
+  .host-note{
+    margin:22px auto 0;
+    max-width:58ch;
+    font-size:14px;
+    color:var(--muted);
+    line-height:1.9;
+  }
+
+  .btn-primary{
+    background:var(--gold);
+    color:#231a05;
+    border:none;
+    border-radius:12px;
+    padding:16px 40px;
+    font-family:var(--display);
+    font-size:26px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    box-shadow:0 6px 0 var(--gold-deep),0 14px 40px rgba(246,196,83,.25);
+    transition:transform .12s,box-shadow .12s;
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-primary:active{transform:translateY(3px);box-shadow:0 2px 0 var(--gold-deep);}
+
+  /* ---------- game screen ---------- */
+  #game{display:none;justify-content:space-between;gap:8px;}
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    width:min(1100px,100%);
+  }
+  .topbar-right{display:flex;align-items:center;gap:10px;}
+  .scene-count{
+    font-family:var(--display);
+    font-size:clamp(20px,2.6vw,30px);
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--cream);
+  }
+  .scene-count b{color:var(--gold);font-weight:inherit;}
+  .hint-chip{
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--muted);
+    border-radius:999px;
+    padding:8px 18px;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .hint-chip b{color:var(--cream);}
+
+  /* ---------- scoreboard ---------- */
+  .scores{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+    width:min(1100px,100%);
+    margin-top:14px;
+  }
+  .team-chip{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:10px 14px 10px 10px;
+    min-width:200px;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .team-chip .bar{width:6px;align-self:stretch;border-radius:4px;flex:none;}
+  .team-chip.t1 .bar{background:var(--gold);}
+  .team-chip.t2 .bar{background:var(--red);}
+  .team-chip.t3 .bar{background:var(--cyan);}
+  .team-chip .tname{
+    font-weight:600;font-size:15px;
+    flex:1;text-align:left;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    max-width:150px;
+  }
+  .team-chip .tscore{
+    font-family:var(--display);
+    font-size:30px;
+    font-variant-numeric:tabular-nums;
+    min-width:36px;
+    color:var(--cream);
+  }
+  .team-chip.t1 .tscore{color:var(--gold);}
+  .team-chip.t2 .tscore{color:var(--red);}
+  .team-chip.t3 .tscore{color:var(--cyan);}
+  .score-btns{display:flex;gap:6px;}
+  .score-btns button{
+    width:34px;height:34px;
+    border-radius:9px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    color:var(--cream);
+    font-size:17px;
+    font-weight:700;
+    line-height:1;
+    transition:background .15s,border-color .15s;
+  }
+  .score-btns button:hover{border-color:var(--gold-deep);background:#2d2442;}
+  .score-btns .plus{color:#231a05;background:var(--cream);}
+  .team-chip.t1 .plus{background:var(--gold);border-color:var(--gold);}
+  .team-chip.t2 .plus{background:var(--red);border-color:var(--red);color:#fff;}
+  .team-chip.t3 .plus{background:var(--cyan);border-color:var(--cyan);}
+  .scores.award .team-chip{border-color:var(--gold-deep);box-shadow:0 0 24px rgba(246,196,83,.12);}
+  .team-chip.bumped{animation:bump .35s cubic-bezier(.2,1.5,.4,1);}
+  @keyframes bump{40%{transform:scale(1.06)}}
+
+  /* ---------- turn banner ---------- */
+  .turn-banner{
+    display:none;
+    align-items:center;
+    gap:14px;
+    margin-top:12px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 10px 8px 22px;
+  }
+  .turn-banner.show{display:inline-flex;}
+  .turn-banner .turn-text{font-weight:700;font-size:16px;letter-spacing:.04em;}
+  .turn-banner.t1{border-color:var(--gold);}
+  .turn-banner.t1 .turn-text{color:var(--gold);}
+  .turn-banner.t2{border-color:var(--red);}
+  .turn-banner.t2 .turn-text{color:var(--red);}
+  .turn-banner.t3{border-color:var(--cyan);}
+  .turn-banner.t3 .turn-text{color:var(--cyan);}
+  .turn-banner.open{border-color:var(--gold);box-shadow:0 0 30px rgba(246,196,83,.3);animation:bump .35s cubic-bezier(.2,1.5,.4,1);}
+  .turn-banner.open .turn-text{color:var(--gold);}
+
+  /* ---------- clue ---------- */
+  .clue-zone{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    min-height:0;
+    position:relative;
+  }
+  .emoji-clue{
+    font-size:clamp(60px,13vw,150px);
+    line-height:1.15;
+    letter-spacing:.06em;
+    margin:0;
+    text-wrap:balance;
+    filter:drop-shadow(0 10px 40px rgba(0,0,0,.5));
+    animation:clue-in .45s cubic-bezier(.2,1.2,.4,1);
+  }
+  @keyframes clue-in{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+
+  .answer-card{
+    position:absolute;
+    inset:auto 0 0 0;
+    margin:0 auto;
+    width:min(760px,94%);
+    background:linear-gradient(180deg,#fbd97b,var(--gold) 55%,var(--gold-deep));
+    color:#231a05;
+    border-radius:18px;
+    padding:22px 30px 24px;
+    box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.5);
+    transform:translateY(40px) scale(.94);
+    opacity:0;
+    pointer-events:none;
+    transition:transform .35s cubic-bezier(.2,1.3,.4,1),opacity .3s;
+  }
+  .answer-card.shown{transform:translateY(0) scale(1);opacity:1;}
+  /* hide instantly on round change so the fade-out never leaks the next answer */
+  .answer-card.snap{transition:none;}
+  .answer-card .setup-label{color:#7a5c12;}
+  .answer-card h2{
+    font-family:var(--display);
+    font-size:clamp(32px,5.5vw,58px);
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    margin:6px 0 0;
+    line-height:1;
+    text-wrap:balance;
+  }
+  .answer-card .year{margin:6px 0 0;font-size:15px;font-weight:600;color:#7a5c12;}
+  .answer-card .award-hint{margin:10px 0 0;font-size:13px;font-weight:600;color:#5a430e;}
+
+  .timesup{
+    position:absolute;
+    top:4%;
+    left:50%;
+    transform:translateX(-50%) rotate(-4deg);
+    background:var(--red);
+    color:#fff;
+    font-family:var(--display);
+    font-size:clamp(20px,3vw,32px);
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    padding:8px 26px;
+    border-radius:8px;
+    box-shadow:0 12px 30px rgba(232,66,90,.45);
+    opacity:0;
+    transition:opacity .25s;
+    pointer-events:none;
+  }
+  .timesup.shown{opacity:1;animation:stamp .35s cubic-bezier(.2,1.5,.4,1);}
+  @keyframes stamp{from{transform:translateX(-50%) rotate(-4deg) scale(1.6)}to{transform:translateX(-50%) rotate(-4deg) scale(1)}}
+
+  /* ---------- bottom bar ---------- */
+  .bottombar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(14px,3.5vw,40px);
+    width:min(1100px,100%);
+    padding-top:10px;
+    flex-wrap:wrap;
+  }
+  .timer{position:relative;width:104px;height:104px;flex:none;}
+  .timer svg{width:100%;height:100%;transform:rotate(-90deg);}
+  .timer .track{stroke:var(--line);}
+  .timer .arc{stroke:var(--gold);transition:stroke-dashoffset 1s linear,stroke .3s;}
+  .timer.low .arc{stroke:var(--red);}
+  .timer .clock{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    font-variant-numeric:tabular-nums;
+    font-size:28px;font-weight:700;
+    color:var(--cream);
+  }
+  .timer.low .clock{color:var(--red);animation:tick-pulse 1s infinite;}
+  @keyframes tick-pulse{50%{transform:scale(1.12)}}
+
+  .btn-ghost{
+    background:var(--panel);
+    color:var(--cream);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 26px;
+    font-size:16px;
+    font-weight:600;
+    letter-spacing:.04em;
+    transition:border-color .15s,background .15s;
+  }
+  .btn-ghost:hover{border-color:var(--gold-deep);background:var(--panel-2);}
+  .btn-ghost kbd{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:1px 7px;
+    font-size:12px;
+    color:var(--muted);
+    margin-left:8px;
+  }
+  .btn-inline{padding:9px 16px;font-size:13px;border-radius:10px;}
+  .btn-reveal{border-color:var(--gold-deep);color:var(--gold);}
+  .btn-next{background:var(--gold);color:#231a05;border-color:var(--gold);}
+  .btn-next:hover{background:#fbd97b;}
+  .btn-next kbd{background:rgba(0,0,0,.12);border-color:rgba(0,0,0,.2);color:#5a430e;}
+
+  /* ---------- recap ---------- */
+  #recap{display:none;}
+  #recap .marquee-title{font-size:clamp(44px,8vw,110px);}
+  .podium{
+    margin-top:34px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    justify-content:center;
+    width:min(900px,100%);
+  }
+  .podium-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px 28px;
+    min-width:190px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    align-items:center;
+  }
+  .podium-card .medal{font-size:34px;}
+  .podium-card .pname{font-weight:600;font-size:17px;}
+  .podium-card .pscore{
+    font-family:var(--display);
+    font-size:46px;
+    font-variant-numeric:tabular-nums;
+    line-height:1;
+  }
+  .podium-card.t1 .pscore{color:var(--gold);}
+  .podium-card.t2 .pscore{color:var(--red);}
+  .podium-card.t3 .pscore{color:var(--cyan);}
+  .podium-card.winner{
+    border-color:var(--gold);
+    box-shadow:0 0 50px rgba(246,196,83,.18);
+    transform:scale(1.06);
+  }
+  .winner-line{
+    margin:26px 0 0;
+    font-family:var(--display);
+    font-size:clamp(24px,4vw,40px);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+  .recap-grid{
+    margin-top:36px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:14px;
+    width:min(1100px,100%);
+    text-align:left;
+  }
+  .recap-item{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .recap-item .em{font-size:26px;flex:none;}
+  .recap-item .ttl{font-weight:600;font-size:15px;line-height:1.3;}
+  .recap-item .num{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;flex:none;}
+
+  /* ---------- host view ---------- */
+  #hostView{display:none;justify-content:flex-start;padding-top:48px;}
+  .host-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 18px;
+    font-size:13px;font-weight:600;
+    color:var(--muted);
+    margin-top:14px;
+  }
+  .host-badge .led{width:9px;height:9px;border-radius:50%;background:var(--red);}
+  .host-badge.live .led{background:var(--green);}
+  .host-card{
+    margin-top:26px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:26px 30px;
+    width:min(620px,100%);
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    align-items:center;
+  }
+  .host-scene{font-size:13px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);}
+  .host-emoji{font-size:52px;line-height:1.2;margin:0;}
+  .host-answer{
+    font-family:var(--display);
+    font-size:clamp(30px,5vw,50px);
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--gold);
+    line-height:1;
+    margin:0;
+    text-wrap:balance;
+  }
+  .host-year{font-size:14px;color:var(--muted);margin:0;font-weight:600;}
+  .host-status{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .pill{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:7px 16px;
+    font-size:14px;
+    font-weight:600;
+    font-variant-numeric:tabular-nums;
+  }
+  .pill.hot{color:var(--red);border-color:var(--red);}
+  .pill.ok{color:var(--green);border-color:#3d5c4b;}
+  .host-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px;}
+  .host-scores{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:min(620px,100%);margin-top:14px;}
+  .host-scores .team-chip{min-width:170px;flex:1;}
+  .host-wait{color:var(--muted);font-size:15px;line-height:1.7;max-width:46ch;}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important;}
+  }
+  @media (max-width:720px){
+    .timer{width:84px;height:84px;}
+    .timer .clock{font-size:22px;}
+    .btn-ghost{padding:12px 18px;font-size:14px;}
+    .btn-inline{padding:9px 14px;font-size:13px;}
+    .btn-ghost kbd{display:none;}
+    .team-chip{min-width:0;flex:1;}
+    .team-chip .tscore{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ START ============ -->
+<section class="stage" id="start">
+  <p class="eyebrow">Friday Activity &middot; Classics &amp; Anime Edition</p>
+  <div class="lights" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <h1 class="marquee-title">Classics &amp;<br>Anime</h1>
+  <p class="tagline">Decode the emojis, shout the title. 3 teams, a pool of 63 — timeless movie classics mixed with legendary anime. Each game deals 21 fresh ones, no repeats until the pool runs dry.</p>
+
+  <div class="setup">
+    <div class="setup-row">
+      <span class="setup-label">Team names</span>
+      <div class="team-inputs">
+        <label><span class="dot dot-t1"></span><input id="name1" value="Team 1" maxlength="16" aria-label="Team 1 name"></label>
+        <label><span class="dot dot-t2"></span><input id="name2" value="Team 2" maxlength="16" aria-label="Team 2 name"></label>
+        <label><span class="dot dot-t3"></span><input id="name3" value="Team 3" maxlength="16" aria-label="Team 3 name"></label>
+      </div>
+    </div>
+
+    <div class="setup-row">
+      <span class="setup-label">Movie pool</span>
+      <div class="seg" style="align-items:center;">
+        <span class="hint-chip"><b id="poolLeft">63</b> unused of <span id="poolTotal">63</span></span>
+        <button class="btn-ghost btn-inline" id="btnResetPool">Reset pool</button>
+      </div>
+      <span class="setup-hint">Each game deals 21 fresh titles — nothing repeats until the whole pool is played.</span>
+    </div>
+
+    <div class="setup-row">
+      <span class="setup-label">Scoreboard</span>
+      <div class="seg" id="carrySeg" role="group" aria-label="Scoreboard">
+        <button data-carry="0" class="on">Start fresh</button>
+        <button data-carry="1">Carry over scores</button>
+      </div>
+    </div>
+
+    <div class="setup-row">
+      <span class="setup-label">Seconds per movie</span>
+      <div class="seg" id="timeSeg" role="group" aria-label="Seconds per movie">
+        <button data-sec="30">30</button>
+        <button data-sec="45" class="on">45</button>
+        <button data-sec="60">60</button>
+        <button data-sec="90">90</button>
+      </div>
+    </div>
+
+    <div class="setup-row">
+      <span class="setup-label">Movie order</span>
+      <div class="seg" id="orderSeg" role="group" aria-label="Movie order">
+        <button data-order="fixed" class="on">In order</button>
+        <button data-order="shuffle">Shuffle</button>
+      </div>
+    </div>
+
+    <div class="setup-row">
+      <span class="setup-label">Play mode</span>
+      <div class="seg" id="modeSeg" role="group" aria-label="Play mode">
+        <button data-mode="free" class="on">Free for all</button>
+        <button data-mode="turns">Take turns</button>
+      </div>
+      <span class="setup-hint">Take turns: each question goes to one team — if they can't answer, it opens to the others.</span>
+    </div>
+
+    <button class="btn-primary" id="btnStart">Roll the film &#127916;</button>
+  </div>
+
+  <p class="host-note">
+    &#127899;&#65039; Presenting? Open this page in a <b>second window</b>, then in that window press
+    <button class="btn-ghost btn-inline" id="btnHostMode">Switch to host view</button><br>
+    The host view shows you every answer privately and can control this screen.
+  </p>
+</section>
+
+<!-- ============ GAME ============ -->
+<section class="stage" id="game">
+  <div class="topbar">
+    <span class="scene-count">Scene <b id="sceneNow">1</b> / <span id="sceneTotal">21</span></span>
+    <span class="topbar-right">
+      <span class="hint-chip">Hint: <b id="hintWords">2 words</b></span>
+      <button class="btn-ghost btn-inline" id="btnHome">&#8962; Home</button>
+    </span>
+  </div>
+
+  <div class="scores" id="scores">
+    <div class="team-chip t1" data-team="0">
+      <span class="bar"></span><span class="tname">Team 1</span><span class="tscore">0</span>
+      <span class="score-btns"><button class="minus" aria-label="Minus 1 point">&minus;</button><button class="plus" aria-label="Plus 1 point">+</button></span>
+    </div>
+    <div class="team-chip t2" data-team="1">
+      <span class="bar"></span><span class="tname">Team 2</span><span class="tscore">0</span>
+      <span class="score-btns"><button class="minus" aria-label="Minus 1 point">&minus;</button><button class="plus" aria-label="Plus 1 point">+</button></span>
+    </div>
+    <div class="team-chip t3" data-team="2">
+      <span class="bar"></span><span class="tname">Team 3</span><span class="tscore">0</span>
+      <span class="score-btns"><button class="minus" aria-label="Minus 1 point">&minus;</button><button class="plus" aria-label="Plus 1 point">+</button></span>
+    </div>
+  </div>
+
+  <div class="turn-banner" id="turnBanner">
+    <span class="turn-text" id="turnText"></span>
+    <button class="btn-ghost btn-inline" id="btnOpenAll">&#128275; Open to all teams<kbd>O</kbd></button>
+  </div>
+
+  <div class="clue-zone">
+    <div class="timesup" id="timesUp">&#9200; Time's up!</div>
+    <p class="emoji-clue" id="emojiClue">&#127916;</p>
+    <div class="answer-card" id="answerCard" aria-live="polite">
+      <span class="setup-label">&#127916; The answer is</span>
+      <h2 id="answerTitle"></h2>
+      <p class="year" id="answerYear"></p>
+      <p class="award-hint">Tap + on the team that got it (or press 1 / 2 / 3)</p>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <div class="timer" id="timerBox">
+      <svg viewBox="0 0 110 110" aria-hidden="true">
+        <circle class="track" cx="55" cy="55" r="48" fill="none" stroke-width="8"></circle>
+        <circle class="arc" id="timerArc" cx="55" cy="55" r="48" fill="none" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="0"></circle>
+      </svg>
+      <span class="clock" id="clock">0:45</span>
+    </div>
+    <button class="btn-ghost" id="btnPause">Pause<kbd>P</kbd></button>
+    <button class="btn-ghost btn-reveal" id="btnReveal">Reveal answer<kbd>Space</kbd></button>
+    <button class="btn-ghost btn-next" id="btnNext">Next movie &rarr;<kbd>N</kbd></button>
+  </div>
+</section>
+
+<!-- ============ RECAP ============ -->
+<section class="stage" id="recap">
+  <p class="eyebrow">The end credits</p>
+  <div class="lights" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <h1 class="marquee-title">That's a wrap!</h1>
+  <p class="winner-line" id="winnerLine"></p>
+  <div class="podium" id="podium"></div>
+  <p class="tagline" style="margin-top:34px;">This game's titles, decoded:</p>
+  <div class="recap-grid" id="recapGrid"></div>
+  <div style="margin-top:36px;">
+    <button class="btn-primary" id="btnAgain">Play again</button>
+  </div>
+</section>
+
+<!-- ============ HOST VIEW ============ -->
+<section class="stage" id="hostView">
+  <p class="eyebrow">Control room — only you see this</p>
+  <h1 class="marquee-title" style="font-size:clamp(38px,6vw,72px);">&#127899;&#65039; Host View</h1>
+  <span class="host-badge" id="hostBadge"><span class="led"></span><span id="hostBadgeText">Waiting for the game screen…</span></span>
+
+  <div class="host-card" id="hostWaitCard">
+    <p class="host-wait" id="hostWaitText">In the other window (on the projector), press <b>Roll the film</b>. This panel connects automatically and shows you each answer as the teams guess.</p>
+  </div>
+
+  <div class="host-card" id="hostCard" style="display:none;">
+    <span class="host-scene" id="hostScene">Scene 1 / 21</span>
+    <p class="host-emoji" id="hostEmoji"></p>
+    <p class="host-answer" id="hostAnswer"></p>
+    <p class="host-year" id="hostYear"></p>
+    <div class="host-status">
+      <span class="pill" id="hostClock">&#9201; 0:45</span>
+      <span class="pill" id="hostState">Guessing…</span>
+      <span class="pill" id="hostTurn" style="display:none;"></span>
+    </div>
+    <div class="host-controls">
+      <button class="btn-ghost" id="hostPause">Pause</button>
+      <button class="btn-ghost" id="hostOpen" style="display:none;">&#128275; Open to all</button>
+      <button class="btn-ghost btn-reveal" id="hostReveal">Reveal on screen</button>
+      <button class="btn-ghost btn-next" id="hostNext">Next movie &rarr;</button>
+    </div>
+  </div>
+
+  <div class="host-scores" id="hostScores" style="display:none;">
+    <div class="team-chip t1" data-team="0">
+      <span class="bar"></span><span class="tname">Team 1</span><span class="tscore">0</span>
+      <span class="score-btns"><button class="minus" aria-label="Minus 1 point">&minus;</button><button class="plus" aria-label="Plus 1 point">+</button></span>
+    </div>
+    <div class="team-chip t2" data-team="1">
+      <span class="bar"></span><span class="tname">Team 2</span><span class="tscore">0</span>
+      <span class="score-btns"><button class="minus" aria-label="Minus 1 point">&minus;</button><button class="plus" aria-label="Plus 1 point">+</button></span>
+    </div>
+    <div class="team-chip t3" data-team="2">
+      <span class="bar"></span><span class="tname">Team 3</span><span class="tscore">0</span>
+      <span class="score-btns"><button class="minus" aria-label="Minus 1 point">&minus;</button><button class="plus" aria-label="Plus 1 point">+</button></span>
+    </div>
+  </div>
+
+  <button class="btn-ghost btn-inline" id="btnExitHost" style="margin-top:26px;">&#8962; Exit host view</button>
+</section>
+
+<script>
+(function(){
+  "use strict";
+
+  /* -------- pool: 3 sets of 21 — classic movies mixed with legendary anime -------- */
+  var SETS = [
+    [
+      { e:"🦁👑🌍",      t:"The Lion King",             y:"1994" },
+      { e:"🦖🌴😱",      t:"Jurassic Park",             y:"1993" },
+      { e:"🦈🏖️😱",     t:"Jaws",                      y:"1975" },
+      { e:"👦🏠🎄😱",    t:"Home Alone",                y:"1990" },
+      { e:"⚡🚗🕰️",     t:"Back to the Future",        y:"1985" },
+      { e:"👽🚲🌕☝️",    t:"E.T.",                      y:"1982" },
+      { e:"👻🚫🔫",      t:"Ghostbusters",              y:"1984" },
+      { e:"🤖🕶️🔫💀",   t:"Terminator",                y:"1984" },
+      { e:"🥊🥩🏃🇺🇸",   t:"Rocky",                     y:"1976" },
+      { e:"🌌⚔️🤖👽",    t:"Star Wars",                 y:"1977" },
+      { e:"🏃🍫🪶🦐",    t:"Forrest Gump",              y:"1994" },
+      { e:"🤠🧸🚀🎈",    t:"Toy Story",                 y:"1995" },
+      { e:"🤖🐱🔔🚪",    t:"Doraemon",                  y:"Anime" },
+      { e:"🐉🔮7️⃣👊",   t:"Dragon Ball",               y:"Anime" },
+      { e:"🍥🥷🦊",      t:"Naruto",                    y:"Anime" },
+      { e:"🏴‍☠️👒🍖⚓",   t:"One Piece",                 y:"Anime" },
+      { e:"⚡🐭🔴⚪",    t:"Pokémon",                   y:"Anime" },
+      { e:"🕵️👓🔍💊",   t:"Detective Conan",           y:"Anime" },
+      { e:"🌙👧✨🐱",    t:"Sailor Moon",               y:"Anime" },
+      { e:"🖍️👦🍑🐕",   t:"Crayon Shin-chan",          y:"Anime" },
+      { e:"🏀🔴🗑️🔥",   t:"Slam Dunk",                 y:"Anime" }
+    ],
+    [
+      { e:"🟢🎭😜💛",    t:"The Mask",                  y:"1994" },
+      { e:"🕶️🕴️👽🐛",  t:"Men in Black",              y:"1997" },
+      { e:"🎲🦏🌴🐒",    t:"Jumanji",                   y:"1995" },
+      { e:"🚌💣💨🚧",    t:"Speed",                     y:"1994" },
+      { e:"👧⚔️🐉🇨🇳",   t:"Mulan",                     y:"1998" },
+      { e:"🦍🌴🍃🙋‍♂️",  t:"Tarzan",                    y:"1999" },
+      { e:"🧜‍♀️🌊👑🦀",  t:"The Little Mermaid",        y:"1989" },
+      { e:"👸🍎⛏️7️⃣",   t:"Snow White",                y:"1937" },
+      { e:"👠🎃🕛🧚",    t:"Cinderella",                y:"1950" },
+      { e:"🤥👃🧵🐋",    t:"Pinocchio",                 y:"1940" },
+      { e:"1️⃣0️⃣1️⃣🐕",  t:"101 Dalmatians",            y:"1961" },
+      { e:"🦸🔵🔴🗞️",   t:"Superman",                  y:"1978" },
+      { e:"👧👺🏮🐉",    t:"Spirited Away",             y:"Anime" },
+      { e:"🌳☂️🐾🚌",    t:"My Neighbor Totoro",        y:"Anime" },
+      { e:"💫👦👧☄️🔄",  t:"Your Name",                 y:"Anime" },
+      { e:"👹⚔️😷🟩",    t:"Demon Slayer",              y:"Anime" },
+      { e:"🧱👹⚔️🪽",    t:"Attack on Titan",           y:"Anime" },
+      { e:"🚗💨⛰️🍜",    t:"Initial D",                 y:"Anime" },
+      { e:"🏰🦵🔥🧙‍♂️",  t:"Howl's Moving Castle",      y:"Anime" },
+      { e:"👨‍🦲👊💥🦸",   t:"One Punch Man",             y:"Anime" },
+      { e:"🤖⚔️🌌🚀",    t:"Gundam",                    y:"Anime" }
+    ],
+    [
+      { e:"🤠🪢🏺💀",    t:"Indiana Jones",             y:"1981" },
+      { e:"🏢🔫🎄💥",    t:"Die Hard",                  y:"1988" },
+      { e:"🥋👦🚗✋",    t:"The Karate Kid",            y:"1984" },
+      { e:"👮🇨🇳👮🇺🇸💥", t:"Rush Hour",                 y:"1998" },
+      { e:"👮🥋🚌💥",    t:"Police Story",              y:"1985" },
+      { e:"👵🧔🍽️🎭",   t:"Mrs. Doubtfire",            y:"1993" },
+      { e:"👻❤️🏺🕯️",   t:"Ghost",                     y:"1990" },
+      { e:"👧👠🌪️🦁",   t:"The Wizard of Oz",          y:"1939" },
+      { e:"☂️👩✨🎠",    t:"Mary Poppins",              y:"1964" },
+      { e:"👦🐻🐯🌴",    t:"The Jungle Book",           y:"1967" },
+      { e:"🐘👂✈️🎪",    t:"Dumbo",                     y:"1941" },
+      { e:"🧚👦⏰🐊",    t:"Peter Pan",                 y:"1953" },
+      { e:"🦖📟🌐👦",    t:"Digimon",                   y:"Anime" },
+      { e:"🃏🎴👁️🐉",   t:"Yu-Gi-Oh!",                 y:"Anime" },
+      { e:"🤖👦🚀⚙️",    t:"Astro Boy",                 y:"Anime" },
+      { e:"🥷👦🏠🐕",    t:"Ninja Hattori",             y:"Anime" },
+      { e:"📓✍️💀🍎",    t:"Death Note",                y:"Anime" },
+      { e:"🐟👧🌊🏠",    t:"Ponyo",                     y:"Anime" },
+      { e:"🧹👧🐈‍⬛📦",   t:"Kiki's Delivery Service",   y:"Anime" },
+      { e:"⚽👦🇯🇵🏆",    t:"Captain Tsubasa",           y:"Anime" },
+      { e:"🦸⚪🔴✨👾",   t:"Ultraman",                  y:"Anime" }
+    ]
+  ];
+  var POOL = SETS[0].concat(SETS[1], SETS[2]);
+  var GAME_SIZE = 21;
+
+  /* played-movie memory, so nothing repeats until the pool is exhausted */
+  var USED_KEY = "emojiClassicsUsed";
+  var used = {};
+  try { used = JSON.parse(localStorage.getItem(USED_KEY)) || {}; } catch(e){ used = {}; }
+  function saveUsed(){ try { localStorage.setItem(USED_KEY, JSON.stringify(used)); } catch(e){} }
+  function unusedIndices(){
+    return POOL.map(function(_, i){ return i; }).filter(function(i){ return !used[i]; });
+  }
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* ---------------- cross-window sync ---------------- */
+  var chan = null;
+  try { chan = new BroadcastChannel("emoji-classics-sync"); } catch(e){}
+  function post(msg){
+    try { if(chan) chan.postMessage(msg); } catch(e){}
+    try {
+      var key = msg.type === "cmd" ? "emojiClassicsCmd" : "emojiClassicsState";
+      localStorage.setItem(key, JSON.stringify({ n: Date.now() + Math.random(), m: msg }));
+    } catch(e){}
+  }
+  function onMessage(msg){
+    if(!msg) return;
+    if(hostMode){ if(msg.type === "state") renderHost(msg.s); }
+    else { if(msg.type === "cmd") handleCmd(msg.c || {}); }
+  }
+  if(chan) chan.onmessage = function(ev){ onMessage(ev.data); };
+  window.addEventListener("storage", function(ev){
+    if(ev.key !== "emojiClassicsCmd" && ev.key !== "emojiClassicsState") return;
+    if(!ev.newValue) return;
+    try { onMessage(JSON.parse(ev.newValue).m); } catch(e){}
+  });
+
+  /* ---------------- state ---------------- */
+  var order = [];            // POOL indices dealt to this game
+  var idx = 0;
+  var secPerRound = 45;
+  var roundTotal = 45;       // what the running countdown started from
+  var shuffleMode = false;
+  var playMode = "free";     // "free" | "turns"
+  var carryScores = false;
+  var assignments = [];      // team index per question (turns mode)
+  var openAll = false;
+  var timeLeft = 0;
+  var timerId = null;
+  var stampTimeout = null;
+  var paused = false;
+  var revealed = false;
+  var hostMode = false;
+  var teams = [
+    { name:"Team 1", score:0 },
+    { name:"Team 2", score:0 },
+    { name:"Team 3", score:0 }
+  ];
+
+  var startEl = $("start"), gameEl = $("game"), recapEl = $("recap"), hostEl = $("hostView");
+  var scoresEl = $("scores");
+  var chips = Array.prototype.slice.call(scoresEl.querySelectorAll(".team-chip"));
+  var hostChips = Array.prototype.slice.call($("hostScores").querySelectorAll(".team-chip"));
+  var arc = $("timerArc"), ARC_LEN = 301.6;
+
+  function screenName(){
+    if(gameEl.style.display === "flex") return "game";
+    if(recapEl.style.display === "flex") return "recap";
+    return "start";
+  }
+  function clockText(){
+    var mn = Math.floor(timeLeft / 60), sc = timeLeft % 60;
+    return mn + ":" + (sc < 10 ? "0" : "") + sc;
+  }
+  function movie(){ return POOL[order[idx]]; }
+
+  function sendState(){
+    if(hostMode) return;
+    var m = order.length ? movie() : POOL[0];
+    post({ type:"state", s:{
+      screen: screenName(),
+      scene: idx + 1,
+      total: order.length || GAME_SIZE,
+      emoji: m.e, title: m.t, year: m.y,
+      words: m.t.split(" ").length,
+      clock: clockText(),
+      revealed: revealed, paused: paused,
+      mode: playMode,
+      turnTeam: (playMode === "turns" && assignments.length) ? assignments[idx] : -1,
+      openAll: openAll,
+      teams: teams.map(function(t){ return { name:t.name, score:t.score }; })
+    }});
+  }
+
+  /* ---------------- setup controls ---------------- */
+  function segWire(segId, onPick){
+    var seg = $(segId);
+    seg.addEventListener("click", function(ev){
+      var b = ev.target.closest("button");
+      if(!b) return;
+      seg.querySelectorAll("button").forEach(function(x){ x.classList.remove("on"); });
+      b.classList.add("on");
+      onPick(b);
+    });
+  }
+  segWire("timeSeg",  function(b){ secPerRound = +b.dataset.sec; });
+  segWire("orderSeg", function(b){ shuffleMode = b.dataset.order === "shuffle"; });
+  segWire("modeSeg",  function(b){ playMode = b.dataset.mode; });
+  segWire("carrySeg", function(b){ carryScores = b.dataset.carry === "1"; });
+
+  function paintPool(){
+    $("poolLeft").textContent = unusedIndices().length;
+    $("poolTotal").textContent = POOL.length;
+  }
+  $("btnResetPool").addEventListener("click", function(){
+    used = {};
+    saveUsed();
+    paintPool();
+  });
+
+  /* ---------------- scoring ---------------- */
+  function paintScores(){
+    chips.forEach(function(chip, i){
+      chip.querySelector(".tname").textContent = teams[i].name;
+      chip.querySelector(".tscore").textContent = teams[i].score;
+    });
+  }
+  function addPoint(i, delta){
+    teams[i].score = Math.max(0, teams[i].score + delta);
+    paintScores();
+    if(delta > 0){
+      var chip = chips[i];
+      chip.classList.remove("bumped");
+      void chip.offsetWidth;
+      chip.classList.add("bumped");
+    }
+    sendState();
+  }
+  scoresEl.addEventListener("click", function(ev){
+    var b = ev.target.closest("button");
+    if(!b) return;
+    var i = +b.closest(".team-chip").dataset.team;
+    addPoint(i, b.classList.contains("plus") ? 1 : -1);
+  });
+
+  /* ---------------- game flow ---------------- */
+  function startGame(){
+    teams.forEach(function(t, i){
+      var typed = $("name" + (i + 1)).value.trim();
+      t.name = typed || "Team " + (i + 1);
+      if(!carryScores) t.score = 0;
+    });
+    paintScores();
+
+    /* deal only movies not played yet; auto-reset once the pool empties */
+    var candidates = unusedIndices();
+    if(!candidates.length){
+      used = {};
+      saveUsed();
+      candidates = unusedIndices();
+    }
+    if(shuffleMode){
+      for(var i = candidates.length - 1; i > 0; i--){
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = candidates[i]; candidates[i] = candidates[j]; candidates[j] = tmp;
+      }
+    }
+    order = candidates.slice(0, GAME_SIZE);
+
+    /* turns mode: shuffled, balanced batches of 3 so every team gets an equal share */
+    assignments = [];
+    if(playMode === "turns"){
+      while(assignments.length < order.length){
+        var trio = [0, 1, 2];
+        for(var k = trio.length - 1; k > 0; k--){
+          var r = Math.floor(Math.random() * (k + 1));
+          var tt = trio[k]; trio[k] = trio[r]; trio[r] = tt;
+        }
+        assignments = assignments.concat(trio);
+      }
+      assignments = assignments.slice(0, order.length);
+    }
+
+    idx = 0;
+    startEl.style.display = "none";
+    recapEl.style.display = "none";
+    gameEl.style.display = "flex";
+    $("sceneTotal").textContent = order.length;
+    loadRound();
+  }
+
+  function paintTurn(){
+    var banner = $("turnBanner");
+    if(playMode !== "turns"){ banner.className = "turn-banner"; return; }
+    var t = assignments[idx];
+    banner.className = "turn-banner show " + (openAll ? "open" : "t" + (t + 1));
+    $("turnText").textContent = openAll
+      ? "🔓 Open to all teams — fastest wins!"
+      : "🎯 " + teams[t].name + "'s question";
+    $("btnOpenAll").style.display = openAll ? "none" : "";
+  }
+
+  function openToAll(){
+    if(playMode !== "turns" || openAll || revealed) return;
+    openAll = true;
+    /* fresh steal timer: half the round time, at least 15 seconds */
+    roundTotal = Math.max(15, Math.ceil(secPerRound / 2));
+    timeLeft = roundTotal;
+    paintClock();
+    var stamp = $("timesUp");
+    stamp.textContent = "🔓 Open to all teams!";
+    stamp.classList.add("shown");
+    clearTimeout(stampTimeout);
+    stampTimeout = setTimeout(function(){ stamp.classList.remove("shown"); }, 2500);
+    paintTurn();
+    sendState();
+  }
+
+  function loadRound(){
+    revealed = false;
+    paused = false;
+    openAll = false;
+    paintTurn();
+    $("btnPause").firstChild.textContent = "Pause";
+    $("sceneNow").textContent = idx + 1;
+
+    /* mark played the moment it appears, so it never comes back */
+    used[order[idx]] = 1;
+    saveUsed();
+
+    var m = movie();
+    var clue = $("emojiClue");
+    clue.textContent = m.e;
+    clue.style.animation = "none";
+    void clue.offsetWidth;
+    clue.style.animation = "";
+
+    var words = m.t.split(" ").length;
+    $("hintWords").textContent = words + (words === 1 ? " word" : " words");
+
+    /* hide instantly and wipe text — the fade-out must never leak this round's answer */
+    var card = $("answerCard");
+    card.classList.add("snap");
+    card.classList.remove("shown");
+    void card.offsetWidth;
+    card.classList.remove("snap");
+    $("answerTitle").textContent = "";
+    $("answerYear").textContent = "";
+
+    clearTimeout(stampTimeout);
+    $("timesUp").textContent = "⏰ Time's up!";
+    $("timesUp").classList.remove("shown");
+    scoresEl.classList.remove("award");
+    $("btnNext").firstChild.textContent = (idx === order.length - 1) ? "Finish " : "Next movie →";
+    resetTimer();
+    sendState();
+  }
+
+  /* ---------------- timer ---------------- */
+  function resetTimer(){
+    clearInterval(timerId);
+    roundTotal = secPerRound;
+    timeLeft = secPerRound;
+    paintClock();
+    timerId = setInterval(tick, 1000);
+  }
+  function tick(){
+    if(paused || revealed) return;
+    timeLeft--;
+    paintClock();
+    if(timeLeft <= 0){
+      if(playMode === "turns" && !openAll){
+        openToAll();          /* don't reveal — hand it to the other teams */
+      } else {
+        var stamp = $("timesUp");
+        stamp.textContent = "⏰ Time's up!";
+        stamp.classList.add("shown");
+        reveal();
+      }
+    }
+    sendState();
+  }
+  function paintClock(){
+    $("clock").textContent = clockText();
+    arc.style.strokeDashoffset = ARC_LEN * (1 - timeLeft / roundTotal);
+    $("timerBox").classList.toggle("low", timeLeft <= 10 && timeLeft > 0);
+  }
+
+  function reveal(){
+    if(revealed) return;
+    revealed = true;
+    clearInterval(timerId);
+    $("timerBox").classList.remove("low");
+    var m = movie();
+    $("answerTitle").textContent = m.t;
+    $("answerYear").textContent = m.y;
+    $("answerCard").classList.add("shown");
+    scoresEl.classList.add("award");
+    sendState();
+  }
+
+  function next(){
+    if(idx >= order.length - 1){ finish(); return; }
+    idx++;
+    loadRound();
+  }
+
+  function togglePause(){
+    if(revealed) return;
+    paused = !paused;
+    $("btnPause").firstChild.textContent = paused ? "Resume" : "Pause";
+    sendState();
+  }
+
+  function goHome(){
+    clearInterval(timerId);
+    gameEl.style.display = "none";
+    recapEl.style.display = "none";
+    startEl.style.display = "flex";
+    paintPool();
+    window.scrollTo(0, 0);
+    sendState();
+  }
+
+  function finish(){
+    clearInterval(timerId);
+    gameEl.style.display = "none";
+
+    var ranked = teams.map(function(t, i){ return { i:i, name:t.name, score:t.score }; })
+                      .sort(function(a, b){ return b.score - a.score; });
+    var top = ranked[0].score;
+    var winners = ranked.filter(function(r){ return r.score === top; });
+    $("winnerLine").textContent = winners.length > 1
+      ? "🤝 It's a tie — everybody wins!"
+      : "🏆 " + winners[0].name + " takes it!";
+
+    var podium = $("podium");
+    podium.innerHTML = "";
+    var medals = ["🥇","🥈","🥉"];
+    ranked.forEach(function(r, n){
+      var card = document.createElement("div");
+      card.className = "podium-card t" + (r.i + 1) + (r.score === top ? " winner" : "");
+      card.innerHTML = '<span class="medal"></span><span class="pname"></span><span class="pscore"></span>';
+      card.querySelector(".medal").textContent = r.score === top ? "🥇" : medals[n];
+      card.querySelector(".pname").textContent = r.name;
+      card.querySelector(".pscore").textContent = r.score;
+      podium.appendChild(card);
+    });
+
+    var grid = $("recapGrid");
+    grid.innerHTML = "";
+    order.forEach(function(mi, n){
+      var m = POOL[mi];
+      var d = document.createElement("div");
+      d.className = "recap-item";
+      d.innerHTML = '<span class="num"></span><span class="em"></span><span class="ttl"></span>';
+      d.querySelector(".num").textContent = n + 1;
+      d.querySelector(".em").textContent = m.e;
+      d.querySelector(".ttl").textContent = m.t + " (" + m.y + ")";
+      grid.appendChild(d);
+    });
+
+    recapEl.style.display = "flex";
+    window.scrollTo(0, 0);
+    sendState();
+  }
+
+  /* ---------------- commands from a host window ---------------- */
+  function handleCmd(c){
+    if(c.cmd === "hello"){ sendState(); return; }
+    if(screenName() !== "game") return;
+    if(c.cmd === "reveal") reveal();
+    else if(c.cmd === "next") next();
+    else if(c.cmd === "pause") togglePause();
+    else if(c.cmd === "open") openToAll();
+    else if(c.cmd === "score") addPoint(c.team, c.delta);
+  }
+
+  /* ---------------- host mode ---------------- */
+  var lastSeen = 0;
+
+  function enterHost(){
+    hostMode = true;
+    clearInterval(timerId);
+    startEl.style.display = "none";
+    gameEl.style.display = "none";
+    recapEl.style.display = "none";
+    hostEl.style.display = "flex";
+    document.title = "Host View — Classics & Anime";
+    window.scrollTo(0, 0);
+    post({ type:"cmd", c:{ cmd:"hello" } });
+  }
+  function exitHost(){
+    hostMode = false;
+    hostEl.style.display = "none";
+    startEl.style.display = "flex";
+    document.title = "Emoji Movie Challenge — Classics & Anime";
+    window.scrollTo(0, 0);
+  }
+
+  function renderHost(s){
+    lastSeen = Date.now();
+    var inGame = s.screen === "game";
+    $("hostWaitCard").style.display = inGame ? "none" : "flex";
+    $("hostCard").style.display = inGame ? "flex" : "none";
+    $("hostScores").style.display = inGame ? "flex" : "none";
+    $("hostWaitText").innerHTML = s.screen === "recap"
+      ? "🏁 Game finished — the recap and podium are on the main screen."
+      : "In the other window (on the projector), press <b>Roll the film</b>. This panel connects automatically and shows you each answer as the teams guess.";
+    if(!inGame) return;
+
+    $("hostScene").textContent = "Scene " + s.scene + " / " + s.total + " · " + s.words + " word" + (s.words === 1 ? "" : "s");
+    $("hostEmoji").textContent = s.emoji;
+    $("hostAnswer").textContent = s.title;
+    $("hostYear").textContent = s.year;
+    $("hostClock").textContent = "⏱ " + s.clock;
+
+    var st = $("hostState");
+    st.className = "pill";
+    if(s.revealed){ st.textContent = "Revealed on screen"; st.classList.add("ok"); }
+    else if(s.paused){ st.textContent = "Paused"; st.classList.add("hot"); }
+    else { st.textContent = "Guessing…"; }
+    $("hostPause").textContent = s.paused ? "Resume" : "Pause";
+
+    var turnPill = $("hostTurn");
+    if(s.mode === "turns" && s.turnTeam >= 0){
+      turnPill.style.display = "";
+      turnPill.textContent = s.openAll ? "🔓 Open to all teams" : "🎯 " + s.teams[s.turnTeam].name;
+    } else {
+      turnPill.style.display = "none";
+    }
+    $("hostOpen").style.display = (s.mode === "turns" && !s.openAll && !s.revealed) ? "" : "none";
+
+    hostChips.forEach(function(chip, i){
+      chip.querySelector(".tname").textContent = s.teams[i].name;
+      chip.querySelector(".tscore").textContent = s.teams[i].score;
+    });
+  }
+
+  function sendCmd(c){ post({ type:"cmd", c:c }); }
+  $("hostReveal").addEventListener("click", function(){ sendCmd({ cmd:"reveal" }); });
+  $("hostNext").addEventListener("click", function(){ sendCmd({ cmd:"next" }); });
+  $("hostPause").addEventListener("click", function(){ sendCmd({ cmd:"pause" }); });
+  $("hostOpen").addEventListener("click", function(){ sendCmd({ cmd:"open" }); });
+  $("hostScores").addEventListener("click", function(ev){
+    var b = ev.target.closest("button");
+    if(!b) return;
+    var i = +b.closest(".team-chip").dataset.team;
+    sendCmd({ cmd:"score", team:i, delta: b.classList.contains("plus") ? 1 : -1 });
+  });
+
+  setInterval(function(){
+    if(!hostMode) return;
+    var live = Date.now() - lastSeen < 4000;
+    $("hostBadge").classList.toggle("live", live);
+    $("hostBadgeText").textContent = live ? "Connected to game screen" : "Waiting for the game screen…";
+  }, 1000);
+
+  /* ---------------- wiring ---------------- */
+  $("btnStart").addEventListener("click", startGame);
+  $("btnAgain").addEventListener("click", goHome);
+  $("btnHome").addEventListener("click", goHome);
+  $("btnReveal").addEventListener("click", reveal);
+  $("btnNext").addEventListener("click", next);
+  $("btnPause").addEventListener("click", togglePause);
+  $("btnOpenAll").addEventListener("click", openToAll);
+  $("btnHostMode").addEventListener("click", enterHost);
+  $("btnExitHost").addEventListener("click", exitHost);
+
+  document.addEventListener("keydown", function(ev){
+    if(hostMode) return;
+    if(gameEl.style.display !== "flex") return;
+    if(ev.target.tagName === "INPUT") return;
+    if(ev.key === " "){ ev.preventDefault(); revealed ? next() : reveal(); }
+    else if(ev.key === "n" || ev.key === "N" || ev.key === "ArrowRight"){ next(); }
+    else if(ev.key === "r" || ev.key === "R"){ reveal(); }
+    else if(ev.key === "p" || ev.key === "P"){ togglePause(); }
+    else if(ev.key === "o" || ev.key === "O"){ openToAll(); }
+    else if(ev.key === "1" || ev.key === "2" || ev.key === "3"){ addPoint(+ev.key - 1, 1); }
+  });
+
+  paintPool();
+  if(location.hash === "#host" || /[?&]host=1/.test(location.search)) enterHost();
+  else sendState();
+})();
+</script>
+</body>
+</html>
